@@ -53,15 +53,18 @@ class KodiLibraryClient:
             start = limits['end']
 
     def get_tmdb_id(self, item, media_type):
-        unique_ids = item['uniqueid']
+        unique_ids = item.get('uniqueid') or {}
         tmdb_id = try_int(unique_ids.get('tmdb'))
         if tmdb_id:
             return tmdb_id
-        imdb_id = unique_ids.get('imdb') or item.get('imdbnumber', '')
-        imdb_id = imdb_id if imdb_id.startswith('tt') else None
+        imdb_id = unique_ids.get('imdb') or item.get('imdbnumber') or ''
+        imdb_id = imdb_id if isinstance(imdb_id, str) and imdb_id.startswith('tt') else None
+        tvdb_id = unique_ids.get('tvdb')
+        if not imdb_id and not tvdb_id:
+            return None
         return self.query_database.get_tmdb_id(
             tmdb_type='movie' if media_type == 'movie' else 'tv',
-            imdb_id=imdb_id, tvdb_id=unique_ids.get('tvdb'))
+            imdb_id=imdb_id, tvdb_id=tvdb_id)
 
     def get_targets(self, tmdb_type, tmdb_id, season=None, episode=None):
         media_type = 'movie' if tmdb_type == 'movie' else 'tvshow'
