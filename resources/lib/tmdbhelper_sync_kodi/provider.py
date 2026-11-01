@@ -14,7 +14,7 @@ from tmdbhelper_sync_kodi.history.database import HistoryDatabase
 
 
 class Provider(SyncProvider):
-    interface_version = 3
+    interface_version = 4
     provider_id = 'kodi'
     display_name = 'Kodi'
     sync_classes = {

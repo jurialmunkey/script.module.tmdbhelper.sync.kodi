@@ -6,7 +6,7 @@ Install alongside `plugin.video.themoviedb.helper` and choose **Kodi** separatel
 for collection, history/progress, watchlist, and/or scrobbling in TMDbHelper's provider selectors.
 No account or authentication is required. Installation does not change selections.
 
-Requires TMDbHelper 6.19.3 or later. Run **TMDbHelper Sync - Kodi** from Program
+Requires TMDbHelper 6.20.2 or later. Run **TMDbHelper Sync - Kodi** from Program
 add-ons to open its Default, Cancel, or Custom provider configuration flow.
 The script extension is declared first so Kodi treats the provider as a runnable
 add-on rather than an orphaned dependency; the module extension remains available
