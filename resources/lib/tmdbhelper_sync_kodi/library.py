@@ -53,7 +53,10 @@ class KodiLibraryClient:
             start = limits['end']
 
     def get_tmdb_id(self, item, media_type):
-        unique_ids = item['uniqueid']
+        try:
+            unique_ids = item['uniqueid']
+        except KeyError:
+            unique_ids = {}
         tmdb_id = try_int(unique_ids.get('tmdb'))
         if tmdb_id:
             return tmdb_id
