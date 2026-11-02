@@ -11,11 +11,13 @@ class KodiLibraryClient:
     page_size = 1000
     method_types = {'movie': 'Movie', 'tvshow': 'TVShow', 'episode': 'Episode'}
     item_properties = {
-        'movie': ('title', 'year', 'uniqueid', 'imdbnumber', 'premiered', 'dateadded',
-                  'playcount', 'lastplayed', 'resume', 'runtime', 'file'),
+        'movie': (
+            'title', 'year', 'uniqueid', 'imdbnumber', 'premiered', 'dateadded',
+            'playcount', 'lastplayed', 'resume', 'runtime', 'file'),
         'tvshow': ('title', 'year', 'uniqueid', 'imdbnumber', 'premiered', 'dateadded'),
-        'episode': ('title', 'season', 'episode', 'tvshowid', 'firstaired', 'dateadded',
-                    'playcount', 'lastplayed', 'resume', 'runtime', 'file'),
+        'episode': (
+            'title', 'season', 'episode', 'tvshowid', 'firstaired', 'dateadded',
+            'playcount', 'lastplayed', 'resume', 'runtime', 'file'),
     }
 
     @cached_property
@@ -68,8 +70,9 @@ class KodiLibraryClient:
 
     def get_targets(self, tmdb_type, tmdb_id, season=None, episode=None):
         media_type = 'movie' if tmdb_type == 'movie' else 'tvshow'
-        parents = [item for item in self.get_items(media_type)
-                   if str(self.get_tmdb_id(item, media_type)) == str(tmdb_id)]
+        parents = [
+            item for item in self.get_items(media_type)
+            if str(self.get_tmdb_id(item, media_type)) == str(tmdb_id)]
         if media_type == 'movie':
             return parents
         return [item for parent in parents for item in self.get_show_targets(parent, season, episode)]
@@ -78,20 +81,23 @@ class KodiLibraryClient:
         params = {'tvshowid': show['tvshowid']}
         if season is not None:
             params['season'] = try_int(season)
-        return [item for item in self.get_items('episode', **params)
-                if episode is None or item['episode'] == try_int(episode)]
+        return [
+            item for item in self.get_items('episode', **params)
+            if episode is None or item['episode'] == try_int(episode)]
 
     def get_details(self, item, media_type):
-        result = self.request(f'VideoLibrary.Get{self.method_types[media_type]}Details', {
-            f'{media_type}id': item[f'{media_type}id'],
-            'properties': list(self.item_properties[media_type]),
-        })
+        result = self.request(
+            f'VideoLibrary.Get{self.method_types[media_type]}Details', {
+                f'{media_type}id': item[f'{media_type}id'],
+                'properties': list(self.item_properties[media_type]),
+            })
         return result[f'{media_type}details']
 
     def set_details(self, item, media_type, **values):
-        result = self.request(f'VideoLibrary.Set{self.method_types[media_type]}Details', {
-            f'{media_type}id': item[f'{media_type}id'], **values,
-        })
+        result = self.request(
+            f'VideoLibrary.Set{self.method_types[media_type]}Details', {
+                f'{media_type}id': item[f'{media_type}id'], **values,
+            })
         if result != 'OK':
             raise KodiLibraryError(f'Updating {media_type} returned {result!r}')
         return True
@@ -101,9 +107,10 @@ class KodiLibraryClient:
         player = next((item for item in players if item['type'] == 'video'), None)
         if player is None:
             return {}
-        return self.request('Player.GetItem', {
-            'playerid': player['playerid'], 'properties': ['file'],
-        })['item']
+        return self.request(
+            'Player.GetItem', {
+                'playerid': player['playerid'], 'properties': ['file'],
+            })['item']
 
     def is_native_playback(self, item, media_type, playing_item):
         if playing_item.get('type') == media_type and playing_item.get('id') == item[f'{media_type}id']:

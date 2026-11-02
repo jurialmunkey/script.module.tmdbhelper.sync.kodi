@@ -34,14 +34,17 @@ class ImportSource:
         mapped = datatype.get_syncitem(meta)
         return {item_id: dict(zip(mapped.table_keys, values)) for item_id, values in mapped.data.items()}
 
+    def merge_records(self, records, items):
+        for item_id, item in items.items():
+            # Show/season rows summarize episodes; they are not individual plays.
+            if item['item_type'] not in ('movie', 'episode'):
+                continue
+            records.setdefault(item_id, {}).update(item)
+
     def get_items(self):
         records = {}
         for sync_type, item_type in (
                 ('SyncWatched', 'movie'), ('SyncWatched', 'show'),
                 ('SyncPlayback', 'movie'), ('SyncPlayback', 'show')):
-            for item_id, item in self.get_records(sync_type, item_type).items():
-                # Show/season rows summarize episodes; they are not individual plays.
-                if item['item_type'] not in ('movie', 'episode'):
-                    continue
-                records.setdefault(item_id, {}).update(item)
+            self.merge_records(records, self.get_records(sync_type, item_type))
         return list(records.values())
