@@ -117,14 +117,14 @@ class KodiSyncSnapshot:
         self.configure_next_episode(parent, available, bool(watched or any(item.get('progress') for item in episodes)))
 
     def configure_next_episode(self, parent, episodes, started):
-        if not started:
-            return
         episodes = sorted(
             (item for item in episodes if item['season_number'] > 0),
             key=self.get_episode_position)
         for item in episodes:
             if not item['plays']:
                 item['upnext_episode_id'] = self.get_episode_id(item)
+        if not started:
+            return
         next_episode = self.get_next_episode(episodes)
         if next_episode is not None:
             parent['next_episode_id'] = self.get_episode_id(next_episode)
