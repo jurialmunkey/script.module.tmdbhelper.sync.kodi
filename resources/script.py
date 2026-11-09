@@ -2,12 +2,7 @@ from xbmc import executebuiltin
 
 
 def import_history():
-    import sys
-    from os.path import join
-    from xbmcaddon import Addon
-
-    sys.path.insert(0, join(Addon('plugin.video.themoviedb.helper').getAddonInfo('path'), 'resources'))
-    from tmdbhelper.lib.sync.providers.registry import SyncProviderRegistry
+    from tmdbhelper_lib.sync.providers.interface import SyncProviderRegistry
     registry = SyncProviderRegistry()
     # Discovery loads provider packages through the core loader, without adding their paths.
     registry.providers
