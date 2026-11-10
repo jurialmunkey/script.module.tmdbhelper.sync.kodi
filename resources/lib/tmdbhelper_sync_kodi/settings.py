@@ -9,6 +9,17 @@ from tmdbhelper_sync_kodi.sync.import_history import HistoryImporter
 from tmdbhelper_sync_kodi.sync.import_source import ImportSource, ImportSourceError
 
 
+class KodiSettings:
+    addon_id = 'script.module.tmdbhelper.sync.kodi'
+
+    def __init__(self):
+        self.addon = Addon(self.addon_id)
+
+    @property
+    def rewatch_enabled(self):
+        return self.addon.getSettingBool('rewatch_enabled')
+
+
 class ImportHistorySettings:
     heading = 'Kodi: Import watched/progress'
     mutex_lockname = 'tmdbhelper_sync_kodi.import_history'

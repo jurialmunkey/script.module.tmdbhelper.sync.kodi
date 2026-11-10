@@ -35,6 +35,12 @@ for TMDbHelper's provider discovery.
   Future-dated library episodes are excluded from available counts and next episodes.
   Episode playcounts remain independent of parent summary rows. A library episode
   resume also starts next-up tracking; the In progress show list requires a watched episode.
+- **Enable rewatching** in this module's Sync settings is enabled by default. Next
+  episodes continue after the most recently completed episode, including episodes
+  watched previously. Disable it to show the first unwatched, aired library episode
+  instead. Fully watched shows have no next episode in this mode; replaying an episode
+  does not bring them back. Changing the setting refreshes next episodes on the next
+  sync request. Watched history and playback progress are still recorded in either mode.
 - Mark watched ensures a playcount of at least one and clears resume. Repeating
   the action does not add plays. Mark unwatched clears playcount, last played, and
   resume. Library matches update the library as usual; non-library movies and episodes

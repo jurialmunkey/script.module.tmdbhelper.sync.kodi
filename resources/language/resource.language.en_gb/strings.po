@@ -35,3 +35,11 @@ msgstr ""
 msgctxt "#32007"
 msgid "Progress could not be imported for {0} library entries without a known runtime."
 msgstr ""
+
+msgctxt "#32008"
+msgid "Enable rewatching"
+msgstr ""
+
+msgctxt "#32009"
+msgid "Continue next episodes from the most recently completed episode, including previously watched episodes. When disabled, show the first unwatched episode and omit fully watched shows."
+msgstr ""

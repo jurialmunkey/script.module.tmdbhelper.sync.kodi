@@ -3,6 +3,7 @@ from jurialmunkey.window import get_property
 from tmdbhelper.lib.addon.consts import KODI_LIBRARY_LAST_UPDATED
 from tmdbhelper.lib.sync.providers.base import SyncProvider
 from tmdbhelper_sync_kodi.library import KodiLibraryClient
+from tmdbhelper_sync_kodi.settings import KodiSettings
 from tmdbhelper_sync_kodi.sync import synctype, datasync
 from tmdbhelper_sync_kodi.actions.basic import ItemWatched, ItemUnwatched
 from tmdbhelper_sync_kodi.actions.progress import ItemProgress
@@ -38,6 +39,13 @@ class Provider(SyncProvider):
         'shows_in_progress': datasync.KodiSyncDataGetterShowsInProgress,
     }
     scrobbler_class = ProviderScrobbler
+
+    @cached_property
+    def settings(self):
+        return self.get_settings()
+
+    def get_settings(self):
+        return KodiSettings()
 
     @cached_property
     def library(self):

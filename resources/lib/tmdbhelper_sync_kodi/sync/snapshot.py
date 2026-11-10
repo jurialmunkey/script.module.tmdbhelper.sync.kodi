@@ -6,6 +6,7 @@ from tmdbhelper_sync_kodi.dates import kodi_date_to_zulu
 
 
 class KodiSyncSnapshot:
+    rewatch_enabled = True
     # Membership/watched state can exist without a corresponding Kodi date.
     unknown_date = '1970-01-01T00:00:00.000000Z'
 
@@ -145,6 +146,11 @@ class KodiSyncSnapshot:
         return item['last_watched_at'] if item['plays'] > 0 else None
 
     def get_next_episode(self, episodes):
+        if self.rewatch_enabled:
+            return self.get_rewatch_next_episode(episodes)
+        return next((item for item in episodes if not item['plays']), None)
+
+    def get_rewatch_next_episode(self, episodes):
         latest = max(
             (item for item in episodes if self.get_episode_completed_at(item)),
             key=lambda item: (self.get_episode_completed_at(item), self.get_episode_position(item)),

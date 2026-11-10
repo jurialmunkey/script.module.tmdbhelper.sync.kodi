@@ -3,6 +3,11 @@
     <section id="script.module.tmdbhelper.sync.kodi">
         <category id="sync" label="32000">
             <group id="1">
+                <setting id="rewatch_enabled" type="boolean" label="32008" help="32009">
+                    <level>0</level>
+                    <default>true</default>
+                    <control type="toggle"/>
+                </setting>
                 <setting id="import_history" type="action" label="32001" help="32002">
                     <level>0</level>
                     <data>RunScript(script.module.tmdbhelper.sync.kodi,import_history)</data>
